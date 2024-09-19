@@ -8,6 +8,7 @@ from mesh3d import *
 from OpenGL.GLU import *
 from button import *
 from settings import * 
+from load_mesh import *
 
 pygame.init()
 
@@ -28,7 +29,7 @@ objects_2d: list[Object] = []
 
 cube = Object("Cube")
 cube.add_component(Transform((0, 0, -5)))
-cube.add_component(Cube(GL_POLYGON, "models/brick_texture.jpg"))
+cube.add_component(LoadMesh(GL_LINE_LOOP, "models/teapot.obj"))
 objects_3d.append(cube)
 
 button1 = Object("Button1")
