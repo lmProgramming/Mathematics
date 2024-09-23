@@ -2,6 +2,7 @@ from mesh3d import *
 from transform import *
 from button import *
 from grid import *
+from display_normals import *
 
 class Object:
     def __init__(self, obj_name) -> None:
@@ -23,10 +24,12 @@ class Object:
             if isinstance(c, Transform):
                 pos = c.get_position()
                 glTranslatef(pos.x, pos.y, pos.z)
-            if isinstance(c, Mesh3D):
+            elif isinstance(c, Mesh3D):
                 c.draw()
-            if isinstance(c, Button):
+            elif isinstance(c, Button):
                 c.draw(events)
-            if isinstance(c, Grid):
+            elif isinstance(c, Grid):
+                c.draw()
+            elif isinstance(c, DisplayNormals):
                 c.draw()
         glPopMatrix()

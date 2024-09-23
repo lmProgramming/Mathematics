@@ -9,6 +9,7 @@ from OpenGL.GLU import *
 from button import *
 from settings import *
 from grid import *
+from display_normals import *
 
 pygame.init()
 
@@ -30,6 +31,7 @@ objects_2d: list[Object] = []
 cube = Object("Cube")
 cube.add_component(Transform((0, 0, -5)))
 cube.add_component(Cube(GL_POLYGON, "models/brick_texture.jpg"))
+cube.add_component(DisplayNormals(cube.get_component(Cube).vertices, cube.get_component(Cube).triangles))
 objects_3d.append(cube)
 
 cube2 = Object("Cube2")
