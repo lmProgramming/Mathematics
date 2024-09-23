@@ -10,6 +10,7 @@ from button import *
 from settings import *
 from grid import *
 from display_normals import *
+from load_mesh import *
 
 pygame.init()
 
@@ -29,24 +30,12 @@ objects_3d: list[Object] = []
 objects_2d: list[Object] = []
 
 cube = Object("Cube")
-cube.add_component(Transform((0, 0, -5)))
-cube.add_component(Cube(GL_POLYGON, "models/brick_texture.jpg"))
-cube.add_component(DisplayNormals(cube.get_component(Cube).vertices, cube.get_component(Cube).triangles))
+cube.add_component(Transform((0, 0, -1.5)))
+cube.add_component(LoadMesh(GL_LINE_LOOP, "models/planesm.obj"))
+cube.add_component(DisplayNormals(cube.get_component(LoadMesh).vertices, cube.get_component(LoadMesh).triangles))
 objects_3d.append(cube)
 
-cube2 = Object("Cube2")
-cube2.add_component(Transform((0, 1, -5)))
-cube2.add_component(Cube(GL_POLYGON, "models/brick_texture_2.jpg"))
-objects_3d.append(cube2)
-
-grid = Object("Grid")
-grid.add_component(Transform((0, 0, -5)))
-grid.add_component(Grid(0.5, 8, green))
-objects_3d.append(grid)
-
-speed = 0.1
-
-def set_2d():
+def set_2d() -> None:
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity()
     gluOrtho2D(0, ORTHODOX_WIDTH, 0, ORTHODOX_HEIGHT)
@@ -54,7 +43,7 @@ def set_2d():
     glLoadIdentity()
     glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
     
-def set_3d():
+def set_3d() -> None:
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity()
     gluPerspective(60, (SCREEN_WIDTH / SCREEN_HEIGHT), 0.1, 100.0)
@@ -66,40 +55,23 @@ def set_3d():
 clock = pygame.time.Clock()
 fps = 30
 
-trans: Transform = cube.get_component(Transform)
-
-start_position = pygame.Vector3(-3, 0, -5)
-end_position = pygame.Vector3(0, 0, -5)
-v: pygame.Vector3 = end_position - start_position
-t: float = 0
-dt: float = 0
-
-trans2: Transform = cube2.get_component(Transform)
-
 while not done:      
     events: List[Event] = pygame.event.get()
     for event in events:    
         if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):      
             done = True
-                
-    if t <= 1:
-        trans.set_position(start_position + v * t)
-        t += 0.0001 * dt
-    
-    x_change = 0
-    y_change = 0           
-    keys = pygame.key.get_pressed()
     
     glPushMatrix()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT) 
+    
     set_3d()
     for object in objects_3d: 
         object.update(events)
     set_2d()
     for object in objects_2d: 
         object.update(events)
-    glPopMatrix()
-    
+        
+    glPopMatrix()    
     pygame.display.flip()
     dt = clock.tick(fps)
 pygame.quit()
