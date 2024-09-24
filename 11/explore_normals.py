@@ -30,10 +30,14 @@ objects_3d: list[Object] = []
 objects_2d: list[Object] = []
 
 cube = Object("Cube")
-cube.add_component(Transform((0, 0, -1.5)))
-cube.add_component(LoadMesh(GL_LINE_LOOP, "models/planesm.obj"))
-cube.add_component(DisplayNormals(cube.get_component(LoadMesh).vertices, cube.get_component(LoadMesh).triangles))
+cube.add_component(Transform((0, 0, -3)))
+cube.add_component(Cube(GL_POLYGON, "models/brick_texture.jpg"))
 objects_3d.append(cube)
+
+mesh = Object("Mesh")
+mesh.add_component(Transform((0, 0, -1.5)))
+mesh.add_component(LoadMesh(GL_TRIANGLES, "models/plane2.obj"))
+objects_3d.append(mesh)
 
 def set_2d() -> None:
     glMatrixMode(GL_PROJECTION)
