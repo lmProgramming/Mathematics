@@ -55,6 +55,7 @@ def set_3d() -> None:
     glLoadIdentity()
     glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
     glEnable(GL_DEPTH_TEST)
+    glEnable(GL_CULL_FACE)
 
 clock = pygame.time.Clock()
 fps = 30
